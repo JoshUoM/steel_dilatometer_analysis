@@ -80,4 +80,4 @@ An example of this would be:
     title = 'Steel 1'
     savedata = True
     
-    CCT_Calculator(comp,G,rates)
+    CCT_Calculator(comp,G,rates,title,savedata)
