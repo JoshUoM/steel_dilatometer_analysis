@@ -192,4 +192,8 @@ Example output:
 
 ## Citing the code:
 
-[![DOI](https://zenodo.org/badge/356209778.svg)](https://zenodo.org/badge/latestdoi/356209778)
+### Cite as:
+Joshua Collins, stavrina, & Ed Pickering. (2023). JoshUoM/steel_dilatometer_analysis: Steel Dilatometry Analysis (v2.0). Zenodo. https://doi.org/10.5281/zenodo.7763330
+
+### DOI:
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7763330.svg)](https://doi.org/10.5281/zenodo.7763330)
