@@ -189,3 +189,7 @@ Example output:
 ## 2. Bibliography
 
 [1]:  H-S. Yang and H. K. D. H. Bhadeshia. Uncertainties in dilatometric determination of martesite start temperature. Materials Science and Technology, 23:556–560, 2007
+
+## Citing the code:
+
+[![DOI](https://zenodo.org/badge/356209778.svg)](https://zenodo.org/badge/latestdoi/356209778)
