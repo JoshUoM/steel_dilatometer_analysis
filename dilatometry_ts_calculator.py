@@ -228,7 +228,7 @@ def offset_method(file,L0,Nc,Ti,dT,comp,p,X):
     # calculate and return the average interception temperature (i.e., Ts) and standard deviation as list -> [Ts,Std]
     return [round(np.mean(interceptions),1), round(np.std(interceptions),1)]
 
-def second_deriv_method(file,L0,Nc,s,Trange):
+def second_deriv_method(file,L0,N,s,dT):
 
     # read data
     data = pd.read_csv(file, delimiter = r"\s+", header = None, skiprows=4, usecols = range(1,3), engine='python', encoding= 'unicode_escape')
@@ -236,22 +236,13 @@ def second_deriv_method(file,L0,Nc,s,Trange):
     data['e'] = (data['x']*10**(-6))/L0
 
     # isolate even spacing between temperature values (i.e., a 1C spacing) - this is for calculating the gradient later
-    x, y = np.array(data['T'][Nc:]), np.array(data['e'][Nc:])
+    x, y = np.array(data['T'][N:]), np.array(data['e'][N:])
     yi = []
     n0 = 0
     xi = np.linspace(int(max(x)),int(min(x)),(int(max(x))-int(min(x)))+1)
     for T in xi:
-        ys = []
-        for n in range(n0,len(x)):
-            if int(x[n]) == T:
-                ys.append(y[n])
-                n0 = n
-            if int(x[n]) < T:
-                break
-        if len(ys) == 0:
-            yi.append(yi[-1])
-        elif len(ys) > 0:
-            yi.append(np.mean(ys))
+        idx = closest_index(x,T)
+        yi.append(y[idx])
 
     # smooth data using a Gaussian filter using sigma, s
     smooth = gaussian_filter1d(yi, s)
@@ -261,10 +252,10 @@ def second_deriv_method(file,L0,Nc,s,Trange):
 
     fig, axs = plt.subplots(1, 2, figsize = (11,5))
 
-    # find position of start and finish temperatures in Trange
-    n2, n1 = list(xi).index(Trange[0]), list(xi).index(Trange[-1])
+    # find position of start and finish temperatures in dT
+    n2, n1 = list(xi).index(dT[0]), list(xi).index(dT[-1])
 
-    # crop data around start and finish temperatures, Trange
+    # crop data around start and finish temperatures, dT
     xi_crop, yi_crop, smooth_crop, smooth_d2_crop = xi[n1:n2], yi[n1:n2], smooth[n1:n2], smooth_d2[n1:n2]
 
     # calculate the temperature/s when 2nd derivative = 0
@@ -300,3 +291,8 @@ def second_deriv_method(file,L0,Nc,s,Trange):
     
     # return Ts and standard deviation
     return [round(interception_point,1), round(std,1)]
+
+def closest_index(lst, K):
+    lst = np.asarray(lst)
+    idx = (np.abs(lst - K)).argmin()
+    return idx
